@@ -302,7 +302,7 @@ export default function ArticlePage() {
           <div style={{ height: 52 }} />
 
           {/* 2. Biology */}
-          <section>
+          {/* <section>
             <SectionHeading id="biology" number="2" title="الاساس البيولوجي للشهوة الجنسية" subtitle="دور الهرمونات في تنظيم الرغبة لدى الجنسين" icon={Dna} />
             <p style={{ color: "#374151", fontSize: 15, lineHeight: 2, marginBottom: 18 }}>
               يعد التستوستيرون الهرمون الاساسي المرتبط ارتباطا مباشرا بالرغبة الجنسية لدى كلا الجنسين. يفرز بمستويات اعلى عند الرجال، ويفرز عند المرأة من المبيض والغدة الكظرية.
@@ -322,7 +322,7 @@ export default function ArticlePage() {
             </div>
           </section>
 
-          <div style={{ height: 52 }} />
+          <div style={{ height: 52 }} /> */}
 
           {/* 3. Man */}
           <section>
