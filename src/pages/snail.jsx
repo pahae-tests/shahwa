@@ -1,4 +1,3 @@
-pages/snail.jsx
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 
