@@ -1,497 +1,573 @@
+pages/snail.jsx
 import Head from "next/head";
-import { useEffect, useRef } from "react";
+import Image from "next/image";
 
-const SECTIONS = [
-  { id: "intro", label: "المقدمة" },
-  { id: "legend", label: "الأسطورة" },
-  { id: "pursuit", label: "الزحف والترقب" },
-  { id: "signs", label: "علامات التعلّق" },
-  { id: "cure", label: "طريقة الفكاك" },
-  { id: "note", label: "ملاحظة" },
+const META = {
+  category: "دراسات الفولكلور",
+  readTime: "٧ دقائق قراءة",
+  date: "١٢ يوليو ٢٠٢٦",
+  author: "قسم التحرير الثقافي",
+};
+
+const TOC = [
+  { id: "intro", label: "١. المدخل" },
+  { id: "origin", label: "٢. البنية السردية للحكاية" },
+  { id: "motif-pursuit", label: "٣. زمن التوقّع: تحليل موتيف الملاحقة" },
+  { id: "transformation", label: "٤. لحظة التحوّل ودلالتها" },
+  { id: "signs", label: "٥. الأعراض المُفترَضة بعد التحوّل" },
+  { id: "ritual", label: "٦. طقس الفكّ وبنيته الرمزية" },
+  { id: "reading", label: "٧. قراءة أنثروبولوجية" },
+  { id: "conclusion", label: "٨. خلاصة" },
 ];
 
-function SnailMark({ className }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 120 90"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        d="M20 70c-8-2-13-10-10-19 3-10 14-15 24-12"
-        stroke="var(--trail)"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M46 66C30 66 22 54 28 42c5-10 18-14 27-8 8 5 9 16 2 22-5 5-14 4-16-3-2-6 3-11 8-9"
-        stroke="var(--brass)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M46 66c10 4 22 2 29-6 5-6 6-14 2-20"
-        stroke="var(--moss)"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <circle cx="79" cy="38" r="3" fill="var(--brass)" />
-      <path d="M79 38c2-6 1-12-3-16" stroke="var(--brass)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="74" cy="20" r="2.2" fill="var(--brass)" />
-      <path d="M72 40c3-5 3-10 0-14" stroke="var(--brass)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="70" cy="24" r="2.2" fill="var(--brass)" />
-    </svg>
-  );
+const QUICK_FACTS = [
+  { label: "التصنيف", value: "أسطورة شعبية شفهية" },
+  { label: "الكائن المركزي", value: "جنّي متشكّل في هيئة حلزون" },
+  { label: "شرط التحوّل", value: "الدوس غير المقصود من الفتاة" },
+  { label: "الأساس العلمي", value: "غير موثَّق — خرافة متوارثة" },
+];
+
+function SectionNumber({ n }) {
+  return <span className="section-number">{n}</span>;
 }
 
-function MoonGarden() {
-  return (
-    <svg
-      viewBox="0 0 600 260"
-      className="hero-art"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="حديقة ليلية تحت ضوء القمر يزحف فيها حلزون"
-    >
-      <defs>
-        <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f4ecd8" stopOpacity="0.95" />
-          <stop offset="60%" stopColor="#e7dcb8" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="#e7dcb8" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="skyFade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#141a2b" />
-          <stop offset="100%" stopColor="#0d1119" />
-        </linearGradient>
-      </defs>
-      <rect width="600" height="260" fill="url(#skyFade)" />
-      <circle cx="470" cy="70" r="90" fill="url(#moonGlow)" />
-      <circle cx="470" cy="70" r="34" fill="#efe6cd" opacity="0.9" />
-      {Array.from({ length: 26 }).map((_, i) => (
-        <circle
-          key={i}
-          cx={(i * 137) % 600}
-          cy={(i * 53) % 150}
-          r={i % 5 === 0 ? 1.6 : 0.9}
-          fill="#e9e4d3"
-          opacity={0.3 + (i % 4) * 0.15}
-        />
-      ))}
-      <path
-        d="M0 220C 60 205, 100 230, 160 218 S 260 200, 320 216 S 430 232, 500 214 S 580 202, 600 214 V260 H0 Z"
-        fill="#1c2416"
-      />
-      <path
-        d="M0 236C 70 222, 120 244, 190 232 S 300 214, 360 230 S 470 246, 540 228 S 600 220, 600 228 V260 H0 Z"
-        fill="#141b0f"
-      />
-      <path
-        d="M40 230 C 90 226, 130 214, 150 190 C 168 168, 158 150, 178 134"
-        stroke="var(--trail-soft)"
-        strokeWidth="2"
-        strokeDasharray="1 7"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <g transform="translate(150,150) scale(1.15)">
-        <path
-          d="M0 40c-6-1-9-7-7-13 2-7 10-10 17-8"
-          stroke="var(--trail)"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <path
-          d="M18 37C7 37 1 28 6 19c4-7 13-10 19-5 6 4 6 11 1 15-4 4-10 3-11-2-1-4 2-7 6-6"
-          stroke="var(--brass)"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-        <path d="M18 37c7 3 15 1 20-4 4-4 4-10 1-14" stroke="var(--moss)" strokeWidth="2.2" strokeLinecap="round" />
-        <circle cx="41" cy="17" r="2" fill="var(--brass)" />
-        <path d="M41 17c1-4 0-8-2-11" stroke="var(--brass)" strokeWidth="1.4" strokeLinecap="round" />
-      </g>
-      <g opacity="0.5">
-        <path d="M480 200c10-30 30-40 30-70" stroke="#3a4a2c" strokeWidth="3" strokeLinecap="round" fill="none" />
-        <path d="M486 178c8-6 18-6 24 0" stroke="#3a4a2c" strokeWidth="2" strokeLinecap="round" fill="none" />
-      </g>
-    </svg>
-  );
-}
-
-function useReveal() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
-
-function Section({ id, eyebrow, title, children }) {
-  const ref = useReveal();
-  return (
-    <section id={id} className="reveal" ref={ref}>
-      <div className="section-mark">
-        <SnailMark className="mark-icon" />
-        <span className="mark-line" />
-      </div>
-      <div className="section-body">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-        <div className="prose">{children}</div>
-      </div>
-    </section>
-  );
-}
-
-export default function SnailLegendPage() {
+export default function SnailLegendArticle() {
   return (
     <>
       <Head>
-        <title>سحر الحلزون — أسطورة الجني المتخفي</title>
+        <title>سحر الحلزون: قراءة تحليلية في أسطورة شعبية متوارثة</title>
         <meta
           name="description"
-          content="قراءة موثقة لأسطورة شعبية تُعرف بسحر الحلزون: حكاية الجني الذي يتخفى في هيئة حلزون صغير."
+          content="مقالة تحليلية تتناول أسطورة سحر الحلزون الشعبية من زاوية أنثروبولوجية: بنيتها السردية، رموزها، ووظيفتها الثقافية."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </Head>
 
-      <main dir="rtl" lang="ar" className="page">
-        <header className="hero">
-          <MoonGarden />
-          <div className="hero-text">
-            <p className="kicker">حكايات وأساطير شعبية</p>
-            <h1>سحر الحلزون</h1>
-            <p className="subtitle">أسطورة الجنّي الذي يتخفّى في هيئة حلزون</p>
-            <p className="lede">
-              من الحكايات الشعبية المتداولة في الذاكرة الجمعية، تُروى قصة غامضة
-              تحمل اسم «سحر الحلزون». حكاية تمزج بين عالم الجن وتفاصيل يومية
-              بسيطة كخطوة فتاة في طريقها، لتتحول إلى أسطورة تُروى جيلًا بعد جيل.
-            </p>
+      <div dir="rtl" lang="ar" className="page">
+        <div className="masthead">
+          <div className="masthead-inner">
+            <span className="masthead-title">أرشيف الفولكلور</span>
+            <span className="masthead-sub">قسم دراسات الحكاية الشعبية</span>
           </div>
-        </header>
+        </div>
 
-        <nav className="toc" aria-label="محتويات المقال">
-          {SECTIONS.map((s, i) => (
-            <a key={s.id} href={`#${s.id}`}>
-              <span className="toc-dot" />
-              {s.label}
-            </a>
-          ))}
-        </nav>
+        <main className="wrapper">
+          <header className="article-header">
+            <p className="kicker">{META.category}</p>
+            <h1>سحر الحلزون: قراءة تحليلية في أسطورة شعبية متوارثة</h1>
+            <p className="dek">
+              كيف تحوّل التقاء عابر بين خطوة إنسانية ومخلوق زاحف صغير إلى
+              أسطورة متكاملة الأركان، تُروى منذ أجيال ضمن التراث الشفهي؟
+            </p>
+            <div className="byline">
+              <span>{META.author}</span>
+              <span className="dot">•</span>
+              <span>{META.date}</span>
+              <span className="dot">•</span>
+              <span>{META.readTime}</span>
+            </div>
+          </header>
 
-        <div className="spine" aria-hidden="true" />
+          <figure className="hero-figure">
+            <Image
+              src="/1.jpg"
+              alt="حلزون يزحف على تربة رطبة في حديقة"
+              width={1280}
+              height={720}
+              className="hero-image"
+              priority
+            />
+            <figcaption>
+              حلزون الحديقة العادي — الكائن الذي تدور حوله تفاصيل الأسطورة
+              المتناقلة شفهيًا. تصوير: أرشيف المجلة.
+            </figcaption>
+          </figure>
 
-        <article className="content">
-          <Section id="intro" eyebrow="مدخل الحكاية" title="حين يتّخذ الجنّي هيئة حلزون">
-            <p>
-              تتحدّث بعض الأساطير الشعبية عن جنّ يملكون القدرة على التشكّل في
-              هيئة حلزون صغير، يزحف على الأرض بهدوء شديد دون أن يثير انتباه
-              أحد. مخلوق صغير عابر، لا يلفت نظرًا، وهذا بالضبط ما يمنحه —
-              بحسب الرواية — قدرته على الاقتراب دون أن يُكتشف أمره.
-            </p>
-          </Section>
+          <div className="layout">
+            <aside className="sidebar">
+              <nav className="toc" aria-label="محتويات المقالة">
+                <p className="toc-title">المحتويات</p>
+                <ul>
+                  {TOC.map((item) => (
+                    <li key={item.id}>
+                      <a href={`#${item.id}`}>{item.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
 
-          <Section id="legend" eyebrow="جوهر الأسطورة" title="لحظة اكتمال السحر">
-            <p>
-              تقول الحكاية إنه إذا صادف أن داست فتاة على ذلك الحلزون بقدمها
-              من غير قصد، فإنّ السحر يكتمل في تلك اللحظة بالذات، ويعود الكائن
-              إلى هيئته الحقيقية. عندها فقط، وبحسب ما تتناقله الرواية، يصبح
-              جنّيًا عاشقًا متعلقًا بها.
-            </p>
-            <p>
-              اللافت في هذه النسخة من الحكاية أنّ الشرط ليس السحر نفسه بقدر
-              ما هو ذلك التقاطع العابر بين خطوة إنسانية عادية ومخلوق يترقّبها.
-            </p>
-          </Section>
+              <div className="quick-facts">
+                <p className="qf-title">معلومات سريعة</p>
+                <dl>
+                  {QUICK_FACTS.map((f) => (
+                    <div className="qf-row" key={f.label}>
+                      <dt>{f.label}</dt>
+                      <dd>{f.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </aside>
 
-          <Section id="pursuit" eyebrow="ما قبل التحوّل" title="الزحف والترقّب">
-            <p>
-              تضيف الرواية تفصيلاً أكثر غرابة: فقبل أن تنجح الفتاة في الدوس
-              عليه، يكون الجنّي المتخفي شديد الإصرار على تحقيق ذلك، فيزحف
-              باستمرار محاولًا الوصول إلى الموضع الذي ستضع فيه قدمها، وكأنه
-              يتوقّع خطواتها القادمة.
-            </p>
-            <p>
-              وإذا غيّرت الفتاة اتجاهها، أو جاءت خطوتها مخالفة لتوقعاته، يعاود
-              الزحف من جديد ليقف في موضع آخر من مسارها، ويكرّر المحاولة مرات
-              عديدة، حتى ينجح أخيرًا في أن تدوسه دون أن تشعر. تلك اللحظة، كما
-              تصفها الأسطورة، هي الشرط الذي يجعله يتحوّل إلى «جنّي عاشق»
-              يرتبط بها.
-            </p>
-          </Section>
+            <article className="content">
+              <section id="intro">
+                <h2><SectionNumber n="01" />المدخل</h2>
+                <p className="lead">
+                  تتداول بعض الأوساط الشعبية حكاية تحمل اسم «سحر الحلزون»،
+                  وهي أسطورة تُنسب فيها لبعض الجنّ القدرة على التشكّل في هيئة
+                  حلزون صغير يزحف على الأرض دون أن يثير انتباه أحد. تستحق هذه
+                  الحكاية وقفة تحليلية لا لصحّتها الواقعية — وهي غير موثّقة
+                  علميًا — بل لبنيتها السردية المحكمة ولوظيفتها داخل المتخيَّل
+                  الشعبي.
+                </p>
+                <p>
+                  تنتمي هذه الحكاية إلى صنف أوسع من الأساطير التي تُبنى على
+                  مبدأ «التخفّي في كائن بريء»، حيث يتقنّع كائن خارق في هيئة
+                  حيوان صغير أو حشرة لا تلفت الشبهة، تمهيدًا لحدث تحوّل لاحق.
+                </p>
+              </section>
 
-          <Section id="signs" eyebrow="بعد التحوّل" title="علامات التعلّق">
-            <p>
-              بعد اكتمال السحر، تزعم الحكايات الشعبية أن الجنّي يبدأ بملاحقة
-              الفتاة، فتشعر بوجود أمور غريبة تتسلل إلى حياتها اليومية:
-            </p>
-            <ul className="signs-list">
-              <li>أحلام مزعجة تتكرر دون سبب واضح.</li>
-              <li>إحساس دائم بأنّ أحدًا يراقبها.</li>
-              <li>أحداث متفرقة لا تجد لها تفسيرًا مقنعًا.</li>
-            </ul>
-            <p className="muted">
-              وتختلف هذه الأوصاف من رواية إلى أخرى بحسب المنطقة والراوي، وهو
-              أمر معتاد في الحكايات الشعبية المتناقلة شفهيًا.
-            </p>
-          </Section>
+              <figure className="inline-figure">
+                <Image
+                  src="/2.jpg"
+                  alt="حديقة ليلية تحت ضوء القمر"
+                  width={1200}
+                  height={700}
+                  className="inline-image"
+                />
+                <figcaption>
+                  المشهد الليلي حاضر بقوة في أغلب روايات الحكاية، إذ يُنسب
+                  للجن نشاط أكبر في ساعات العتمة.
+                </figcaption>
+              </figure>
 
-          <Section id="cure" eyebrow="فكّ الأثر" title="طريقة التخلّص من سحر الحلزون">
-            <p>
-              تذكر بعض نسخ الأسطورة طريقة غريبة للتخلص مما يُسمّى «سحر
-              الحلزون». يُقال إنّ الفتاة تبحث عن مكان تتجمّع فيه أعداد كبيرة
-              من الحلزونات العادية، ثم تمشي فيه ذهابًا وإيابًا دون أن تنظر
-              إلى الأرض، حتى تدوس على جميع الحلزونات الموجودة.
-            </p>
-            <p>
-              بعد ذلك، تعيد المرور فوق المكان نفسه مرة أخرى للتأكد — بحسب
-              الرواية — من أنّ جميعها قد سُحق. وعندها فقط، كما تختم الحكاية،
-              يزول أثر الجنّي العاشق.
-            </p>
-          </Section>
+              <section id="origin">
+                <h2><SectionNumber n="02" />البنية السردية للحكاية</h2>
+                <p>
+                  تسير الرواية وفق تسلسل ثابت يتكرر في أغلب النسخ المتداولة:
+                  كائن متخفٍّ، حدث عابر يُفعّل التحوّل، ثم نتائج تمتد في حياة
+                  الشخصية الرئيسية. هذا التسلسل الثلاثي يمنح الحكاية تماسكًا
+                  يسهّل تناقلها شفهيًا دون أن تفقد عناصرها الأساسية.
+                </p>
+                <p>
+                  ما يميّز «سحر الحلزون» عن أساطير التخفّي المشابهة هو اختيار
+                  الحلزون بالذات: كائن بطيء، صامت، لا يُنظر إليه عادة كتهديد،
+                  ما يجعل فكرة التخفّي فيه أكثر إقناعًا داخل المنطق الداخلي
+                  للحكاية.
+                </p>
+              </section>
 
-          <Section id="note" eyebrow="بين الحكاية والواقع" title="ملاحظة أخيرة">
-            <p>
-              «سحر الحلزون» حكاية من التراث الشفهي الشعبي، تُصنَّف ضمن
-              الأساطير والخرافات المتوارثة، ولا تستند إلى أي أساس علمي أو
-              ديني موثّق. قيمتها تكمن في كونها جزءًا من الخيال الجمعي وأسلوب
-              الرواية الشفهية، لا في كونها وصفًا لواقعة حقيقية.
-            </p>
-          </Section>
-        </article>
+              <section id="motif-pursuit">
+                <h2><SectionNumber n="03" />زمن التوقّع: تحليل موتيف الملاحقة</h2>
+                <p>
+                  تضيف بعض الروايات تفصيلاً سرديًا لافتًا: قبل اكتمال السحر،
+                  يُوصف الكائن المتخفّي بإصرار شديد على تحقيق التحوّل، فيزحف
+                  باستمرار محاولًا الوصول إلى الموضع الذي ستضع فيه الفتاة
+                  قدمها، وكأنه يتوقّع خطواتها القادمة.
+                </p>
+                <p>
+                  وإذا غيّرت اتجاهها، أو جاءت خطوتها مخالفة لتوقّعه، يعاود
+                  الزحف من جديد ليقف في موضع آخر من مسارها، ويكرّر المحاولة
+                  مرات عديدة حتى يحين إتمامه لهدفه. وظيفيًا، يمنح هذا التفصيل
+                  الحكاية بُعدًا دراميًا: فالحدث الذي يبدو عرَضيًا يتحوّل إلى
+                  غاية مقصودة من طرف واحد، ما يرفع التوتر السردي قبل نقطة
+                  التحوّل.
+                </p>
+              </section>
 
-        <footer className="footer">
-          <SnailMark className="footer-mark" />
-          <p>حكاية شعبية متوارثة — تُروى للتسلية والتوثيق الثقافي فقط.</p>
+              <section id="transformation">
+                <h2><SectionNumber n="04" />لحظة التحوّل ودلالتها</h2>
+                <p>
+                  بحسب الرواية، يكتمل السحر في اللحظة التي تدوس فيها الفتاة
+                  على الحلزون دون قصد، فيعود الكائن إلى هيئته الأصلية بوصفه
+                  «جنّيًا عاشقًا» متعلقًا بها. هذا الشرط — أي أن يكون الفعل
+                  غير مقصود من طرف الإنسان — نمط متكرر في حكايات التحوّل
+                  الشعبية، إذ يُراد منه نفي المسؤولية عن الشخصية البشرية
+                  وتحميل الحدث بُعدًا قدَريًا لا إراديًا.
+                </p>
+              </section>
+
+              <figure className="inline-figure">
+                <Image
+                  src="/3.jpg"
+                  alt="أثر زحف حلزون على تربة رطبة"
+                  width={1200}
+                  height={700}
+                  className="inline-image"
+                />
+                <figcaption>
+                  الأثر اللزج الذي يتركه الحلزون خلفه استُثمر رمزيًا في بعض
+                  روايات الحكاية كعلامة على مروره.
+                </figcaption>
+              </figure>
+
+              <section id="signs">
+                <h2><SectionNumber n="05" />الأعراض المُفترَضة بعد التحوّل</h2>
+                <p>
+                  تصف بعض الروايات ما يعقب التحوّل بأنه ملاحقة خفية للفتاة،
+                  تترجَم في تفاصيل يومية مبهمة، من أبرزها:
+                </p>
+                <ul>
+                  <li>أحلام مزعجة تتكرر دون سبب واضح.</li>
+                  <li>إحساس دائم بأنّ أحدًا يراقبها.</li>
+                  <li>أحداث متفرقة لا تجد لها تفسيرًا مقنعًا.</li>
+                </ul>
+                <p className="muted">
+                  تتفاوت هذه التفاصيل بشكل واضح بين رواية وأخرى، وهو ما
+                  يعكس طبيعة النقل الشفهي للحكايات الشعبية، حيث يضيف كل راوٍ
+                  لمسته الخاصة.
+                </p>
+              </section>
+
+              <section id="ritual">
+                <h2><SectionNumber n="06" />طقس الفكّ وبنيته الرمزية</h2>
+                <p>
+                  تصف بعض نسخ الحكاية طريقة للتخلّص مما يُسمّى «سحر الحلزون»:
+                  تبحث الفتاة عن مكان تتجمّع فيه أعداد كبيرة من الحلزونات
+                  العادية، ثم تمشي فيه ذهابًا وإيابًا دون النظر إلى الأرض حتى
+                  تدوس عليها جميعًا، ثم تكرّر المرور فوق المكان للتأكد من
+                  اكتمال الأثر.
+                </p>
+                <p>
+                  هذا الطقس المُتخيَّل يتّبع نمطًا شائعًا في حكايات فكّ
+                  السحر الشعبية: فعل مضاعَف ومتعمَّد يُقابل الفعل الأول غير
+                  المقصود، وكأن الحكاية تصحّح اختلالها الداخلي بإعادة إنتاج
+                  الحدث نفسه على نطاق أوسع وبإرادة واعية هذه المرة.
+                </p>
+              </section>
+
+              <blockquote className="pull-quote">
+                القيمة الحقيقية لهذه الحكاية لا تكمن في وقائعها، بل في ما
+                تكشفه عن آليات اشتغال الخيال الشعبي وتحويله لتفاصيل الحياة
+                اليومية إلى أحداث ذات معنى.
+              </blockquote>
+
+              <section id="reading">
+                <h2><SectionNumber n="07" />قراءة أنثروبولوجية</h2>
+                <p>
+                  يمكن قراءة «سحر الحلزون» ضمن سياق أوسع من الحكايات التي
+                  تُفسّر من خلالها الجماعات الشعبية أحداثًا غامضة أو مشاعر
+                  غير مبرَّرة — كالقلق أو الأرق أو الشعور بالمراقبة — عبر
+                  إسنادها إلى كائن خارق. هذا النمط من التفسير الرمزي يمنح
+                  الفرد إطارًا مفهومًا للتعامل مع تجارب صعبة التفسير، وإن لم
+                  يكن يستند إلى أساس واقعي أو علمي.
+                </p>
+                <p>
+                  كما تعكس الحكاية، من زاوية اجتماعية، حساسية ثقافية تجاه
+                  فكرة «العين» أو «اللمسة العابرة» التي تُحدث أثرًا كبيرًا،
+                  وهو موتيف متكرر في أساطير كثيرة تتناول التماس البسيط بين
+                  الإنسان وكائنات مفترَضة أخرى.
+                </p>
+              </section>
+
+              <section id="conclusion" className="conclusion">
+                <h2><SectionNumber n="08" />خلاصة</h2>
+                <p>
+                  «سحر الحلزون» حكاية من التراث الشفهي الشعبي، تُصنَّف ضمن
+                  الأساطير والخرافات المتوارثة، ولا تستند إلى أي أساس علمي أو
+                  ديني موثّق. قيمتها التحليلية تكمن في بنيتها السردية وفي ما
+                  تعكسه من آليات التفكير الرمزي داخل الثقافة الشعبية، لا في
+                  كونها وصفًا لواقعة حقيقية.
+                </p>
+              </section>
+
+              <div className="sources">
+                <p className="sources-title">مصدر المادة</p>
+                <p>
+                  رواية شفهية متداولة ضمن التراث الشعبي، جُمعت ونُظّمت لأغراض
+                  التوثيق الثقافي والتحليل الأنثروبولوجي.
+                </p>
+              </div>
+            </article>
+          </div>
+        </main>
+
+        <footer className="site-footer">
+          <p>أرشيف الفولكلور — قسم دراسات الحكاية الشعبية</p>
         </footer>
-      </main>
+      </div>
 
       <style jsx>{`
-        :global(html) {
-          scroll-behavior: smooth;
-        }
         .page {
-          --ink: #12151f;
-          --panel: #171b28;
-          --parchment: #ece6d6;
-          --moss: #6f8a52;
-          --brass: #c79a5b;
-          --trail: #9fb3a6;
-          --trail-soft: #5c6a5c;
-          --text: #d9dccd;
-          --text-dim: #a8ad9b;
-          background: var(--ink);
-          color: var(--text);
-          font-family: "Tajawal", sans-serif;
+          --paper: #eef1e8;
+          --paper-card: #fbfaf4;
+          --ink: #1f2b1f;
+          --ink-soft: #444f3d;
+          --muted: #7a8370;
+          --accent: #3f6b5c;
+          --rule-gold: #a68a54;
+          --line: #d9dcc9;
+          background: var(--paper);
+          color: var(--ink);
+          font-family: "IBM Plex Sans Arabic", sans-serif;
           min-height: 100vh;
-          overflow-x: hidden;
         }
 
-        .hero {
-          position: relative;
-          padding: 0 0 3rem;
+        .masthead {
+          border-bottom: 1px solid var(--line);
+          background: var(--paper-card);
+        }
+        .masthead-inner {
+          max-width: 980px;
+          margin: 0 auto;
+          padding: 0.9rem 1.5rem;
+          display: flex;
+          align-items: baseline;
+          gap: 0.9rem;
+        }
+        .masthead-title {
+          font-family: "Amiri", serif;
+          font-weight: 700;
+          font-size: 1.15rem;
+          color: var(--ink);
+        }
+        .masthead-sub {
+          font-size: 0.82rem;
+          color: var(--muted);
+        }
+
+        .wrapper {
+          max-width: 980px;
+          margin: 0 auto;
+          padding: 2.5rem 1.5rem 1rem;
+        }
+
+        .article-header {
+          max-width: 760px;
+          margin: 0 auto 2rem;
           text-align: center;
         }
-        .hero-art {
-          width: 100%;
-          height: auto;
-          display: block;
-          max-height: 340px;
-          object-fit: cover;
-        }
-        .hero-text {
-          max-width: 640px;
-          margin: -3.5rem auto 0;
-          padding: 0 1.5rem;
-          position: relative;
-          z-index: 2;
-        }
         .kicker {
-          font-family: "Tajawal", sans-serif;
-          letter-spacing: 0.08em;
-          color: var(--brass);
+          color: var(--accent);
+          font-weight: 600;
           font-size: 0.85rem;
-          margin-bottom: 0.4rem;
+          letter-spacing: 0.03em;
+          margin: 0 0 0.6rem;
         }
         h1 {
-          font-family: "Aref Ruqaa", serif;
-          font-size: clamp(2.6rem, 6vw, 4.2rem);
-          font-weight: 700;
-          margin: 0.2rem 0;
-          color: var(--parchment);
-          text-shadow: 0 0 24px rgba(199, 154, 91, 0.25);
+          font-family: "Amiri", serif;
+          font-size: clamp(1.9rem, 4vw, 2.6rem);
+          line-height: 1.4;
+          margin: 0 0 0.9rem;
+          color: var(--ink);
         }
-        .subtitle {
-          font-family: "Aref Ruqaa", serif;
-          font-size: 1.3rem;
-          color: var(--trail);
-          margin: 0 0 1.2rem;
+        .dek {
+          font-size: 1.08rem;
+          color: var(--ink-soft);
+          line-height: 1.9;
+          margin: 0 0 1.1rem;
         }
-        .lede {
-          color: var(--text-dim);
-          line-height: 2;
-          font-size: 1.02rem;
+        .byline {
+          font-size: 0.85rem;
+          color: var(--muted);
+          display: flex;
+          justify-content: center;
+          gap: 0.5rem;
+        }
+        .dot {
+          color: var(--line);
         }
 
+        .hero-figure {
+          margin: 0 0 2.5rem;
+        }
+        .hero-image {
+          width: 100%;
+          height: auto;
+          border-radius: 2px;
+          display: block;
+        }
+        figcaption {
+          font-size: 0.82rem;
+          color: var(--muted);
+          margin-top: 0.6rem;
+          text-align: center;
+          border-top: 1px solid var(--line);
+          padding-top: 0.5rem;
+        }
+
+        .layout {
+          display: grid;
+          grid-template-columns: 220px 1fr;
+          gap: 2.5rem;
+          align-items: start;
+        }
+
+        .sidebar {
+          position: sticky;
+          top: 1.5rem;
+        }
         .toc {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 0.5rem 1.4rem;
-          max-width: 760px;
-          margin: 0 auto 2.5rem;
-          padding: 0 1.5rem;
+          border-top: 2px solid var(--rule-gold);
+          padding-top: 0.8rem;
+          margin-bottom: 1.8rem;
+        }
+        .toc-title,
+        .qf-title {
+          font-weight: 700;
+          font-size: 0.8rem;
+          color: var(--ink);
+          margin: 0 0 0.6rem;
+        }
+        .toc ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        .toc li {
+          margin-bottom: 0.5rem;
         }
         .toc a {
-          color: var(--text-dim);
+          color: var(--ink-soft);
           text-decoration: none;
-          font-size: 0.9rem;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.4rem;
-          transition: color 0.2s ease;
+          font-size: 0.85rem;
+          line-height: 1.5;
         }
         .toc a:hover {
-          color: var(--brass);
+          color: var(--accent);
         }
-        .toc-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: var(--moss);
-          display: inline-block;
+
+        .quick-facts {
+          background: var(--paper-card);
+          border: 1px solid var(--line);
+          padding: 1rem;
+          border-radius: 2px;
+        }
+        .qf-row {
+          padding: 0.5rem 0;
+          border-bottom: 1px dashed var(--line);
+        }
+        .qf-row:last-child {
+          border-bottom: none;
+        }
+        .qf-row dt {
+          font-size: 0.72rem;
+          color: var(--muted);
+          margin: 0 0 0.15rem;
+        }
+        .qf-row dd {
+          font-size: 0.88rem;
+          margin: 0;
+          color: var(--ink);
+          font-weight: 500;
         }
 
         .content {
-          max-width: 760px;
-          margin: 0 auto;
-          padding: 0 1.5rem 2rem;
-          position: relative;
+          max-width: 680px;
         }
-
-        section {
-          display: grid;
-          grid-template-columns: 44px 1fr;
-          gap: 1rem;
-          margin-bottom: 2.6rem;
-          opacity: 0;
-          transform: translateY(14px);
-          transition: opacity 0.6s ease, transform 0.6s ease;
+        .content section {
+          margin-bottom: 2.2rem;
         }
-        section.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .section-mark {
+        .content h2 {
+          font-family: "Amiri", serif;
+          font-size: 1.4rem;
+          color: var(--ink);
           display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .mark-icon {
-          width: 40px;
-          height: 32px;
-          flex-shrink: 0;
-        }
-        .mark-line {
-          flex: 1;
-          width: 1px;
-          background: linear-gradient(
-            to bottom,
-            var(--trail-soft),
-            transparent
-          );
-          margin-top: 0.4rem;
-        }
-
-        .eyebrow {
-          color: var(--brass);
-          font-size: 0.82rem;
-          letter-spacing: 0.04em;
-          margin: 0 0 0.3rem;
-        }
-        h2 {
-          font-family: "Aref Ruqaa", serif;
-          font-size: 1.7rem;
-          color: var(--parchment);
+          align-items: baseline;
+          gap: 0.6rem;
           margin: 0 0 0.9rem;
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid var(--line);
         }
-        .prose p {
-          line-height: 2.1;
-          color: var(--text);
-          margin: 0 0 1rem;
+        .section-number {
+          font-family: "IBM Plex Sans Arabic", sans-serif;
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: var(--accent);
+        }
+        .content p {
+          line-height: 2;
           font-size: 1.02rem;
+          color: var(--ink-soft);
+          margin: 0 0 1rem;
         }
-        .prose p.muted {
-          color: var(--text-dim);
-          font-size: 0.92rem;
+        .content p.lead {
+          font-size: 1.12rem;
+          color: var(--ink);
         }
-        .signs-list {
+        .content p.muted {
+          font-size: 0.9rem;
+          color: var(--muted);
+        }
+        .content ul {
           margin: 0 0 1rem;
           padding-inline-start: 1.3rem;
-          line-height: 2;
+          line-height: 1.9;
         }
-        .signs-list li {
-          margin-bottom: 0.3rem;
+        .content ul li {
+          margin-bottom: 0.35rem;
+          color: var(--ink-soft);
         }
-        .signs-list li::marker {
-          color: var(--moss);
+        .content ul li::marker {
+          color: var(--accent);
         }
 
-        .footer {
+        .inline-figure {
+          margin: 1.6rem 0 2.2rem;
+        }
+        .inline-image {
+          width: 100%;
+          height: auto;
+          border-radius: 2px;
+          display: block;
+        }
+
+        .pull-quote {
+          font-family: "Amiri", serif;
+          font-size: 1.35rem;
+          line-height: 1.8;
+          color: var(--accent);
+          border-right: 3px solid var(--rule-gold);
+          padding: 0.3rem 1.2rem;
+          margin: 2rem 0;
+        }
+
+        .conclusion {
+          background: var(--paper-card);
+          border: 1px solid var(--line);
+          padding: 1.4rem;
+          border-radius: 2px;
+        }
+
+        .sources {
+          border-top: 1px solid var(--line);
+          padding-top: 1rem;
+          margin-top: 1.5rem;
+        }
+        .sources-title {
+          font-weight: 700;
+          font-size: 0.85rem;
+          margin: 0 0 0.3rem;
+        }
+        .sources p:last-child {
+          font-size: 0.88rem;
+          color: var(--muted);
+        }
+
+        .site-footer {
           text-align: center;
-          padding: 2.5rem 1.5rem 3.5rem;
-          color: var(--text-dim);
-          font-size: 0.9rem;
-          border-top: 1px solid rgba(159, 179, 166, 0.15);
-          margin-top: 1rem;
-        }
-        .footer-mark {
-          width: 46px;
-          height: 36px;
-          opacity: 0.7;
-          margin-bottom: 0.6rem;
+          padding: 2rem 1.5rem;
+          border-top: 1px solid var(--line);
+          color: var(--muted);
+          font-size: 0.82rem;
         }
 
-        @media (max-width: 560px) {
-          section {
-            grid-template-columns: 30px 1fr;
+        @media (max-width: 820px) {
+          .layout {
+            grid-template-columns: 1fr;
           }
-          .mark-icon {
-            width: 26px;
-            height: 22px;
+          .sidebar {
+            position: static;
+            order: 2;
           }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          section {
-            transition: none;
-            opacity: 1;
-            transform: none;
-          }
-          :global(html) {
-            scroll-behavior: auto;
+          .content {
+            order: 1;
+            max-width: none;
           }
         }
       `}</style>
