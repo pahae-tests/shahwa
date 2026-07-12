@@ -45,7 +45,7 @@ export default function SnailLegendArticle() {
 
           <figure className="hero-figure">
             <Image
-              src="/1.jpg"
+              src="/1.png"
               alt="سحر الحلزون.. أسطورة الجني الذي يتخفى في هيئة حلزون"
               width={1280}
               height={720}
@@ -71,7 +71,7 @@ export default function SnailLegendArticle() {
 
             <figure className="inline-figure">
               <Image
-                src="/2.jpg"
+                src="/2.png"
                 alt="سحر الحلزون.. أسطورة الجني الذي يتخفى في هيئة حلزون"
                 width={1200}
                 height={700}
@@ -99,7 +99,7 @@ export default function SnailLegendArticle() {
 
             <figure className="inline-figure">
               <Image
-                src="/3.jpg"
+                src="/3.png"
                 alt="سحر الحلزون.. أسطورة الجني الذي يتخفى في هيئة حلزون"
                 width={1200}
                 height={700}
